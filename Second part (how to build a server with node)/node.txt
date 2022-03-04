@@ -1,0 +1,576 @@
+* NODE.js runs on the V8 engine.
+
+* NODE.js is writen in the js language.
+
+* NODE.js is can run on our computer and does not need the browser.
+
+*the reason that NODE js can run on our computer with out the need to have a browser, is of the same reason that the broweser can read the js language at all and undestand it: beacuse of the V8 engine. Chrome is run through the V8 engine which is created with the C++ language, and the C++ language is an abstract language, which makes it easier for devs to code so that the computer will understad their commands. and the chain of languges from machine up is like this :
+
+1- is the base language whhich is the mechine language.
+
+2- assambly code.
+
+3- C++.
+
+4- is our language: JS.
+
+* so therefore the reason that NODE js can run on our computwe is because it - like the chrome browser- runs on the V8 engine which runs on C++, which then interpurtes our code all the way down to mechine code.
+
+* Node js is not only for running code instead of using the browser, it is also used for making files naming files connecting detabases and also act as a server for data.
+
+* A small down side to running js through NODE js is that we loose some of the abilties that the browser gave us such as DOM manipulation. or using the 'Window' object and hansforth the 'document' object(NODE uses a diffrent word called 'global').
+
+* An amazing benifit that NODE js has over other languages that handle servers: 
+
+1- is that we dont need to learn a new language it uses the JS language and compiles it down untill it is machine code.
+
+2- we can share code between the front and back-end.
+
+3- there is a huge comunity behind it.
+
+4- there are a lot of third-party packages and tools that we can use to help our code.
+
+
+
+==== NODE JS BASICS ====
+
+* In NODE we write normal JS code. and use the same syntax. allthough there is a diff between the Js that is used in the browser then in using the NODE js. in the browser there is the window object (also known as the globale object) that has all it's methods and all its propertis that we can use in the browser. in NODE we dont have the window object we have the 'globle' object. which has its own properties and methods.
+(remember that the reason why we dont need the window or the document object, is beacuse we are not interacting with the webpage, we are interacting with the back end side or with the servers.)
+
+* Just like in  the window object on the browser there is no need to write the window.method/property. the same goes for the 'global' object we can just write the property/method without writing global.
+
+* '__dirname' - is a way for us to find our current director in NODEwe will need this late.
+there is also '__filename', which will give us the files name.
+
+
+
+==== MODULES AND REQUIRE ====
+
+* Modules are other separated script.js files that we have in our project that we can connect together to be one. and are good for reusability and making things more clear and clean. also known as : "packages".
+
+* So if we have an array in one script.js file and we want to use it in our main script.js file. all we have to do is this: 
+
+   const mainFile = require('./arrayFile');
+
+this we do in the mainFile. but we only make changes from the arrayFiles. meaning that we cant make changes to the arrayFile from the mainFile. for this we need to manuely export the file that we want.
+
+* So to give compleate access to the mainFile to make changes from itself to the arrayFile. we need to do this in the file we want to export:
+
+   module.exports = {
+      array: array,
+      secondArray: secondArray,
+   }
+
+this is how we export a method or a property. we can export a single method/property or multipul ones. they get all stored in the object (when you export only one method/property you dont have to add the {}). 
+By the way there is even a shorter way of writing the exporting code:
+
+   module.exports = {
+      array,
+      secondArray,
+   }
+
+this you can do - even though we are writing data in an object, and objects are key-value pairs - still we can write only 
+"array" once beacuse under the hood js makes array : array, so that we wont have to write it. since always the key will equel the property.
+
+* If we want to distructure, meaning getting only a spasific property from the imported file (the object that is in the modul.exports), we can, we just do this:
+
+   const { secondArray } = require('./arrayFile');
+
+and this will get the second array in the array.js file and will not grant us access to "touch" the first array (that is in the same page).
+
+* All that we have said untill now about modules is costum made module (modules made by us).
+allthough NODE has a few modules that are built inside it, and we can 'require' them to use in our projects.
+
+
+
+==== NODE & THE FILE SYSTEM ====
+
+* This section is going to talk about how to interact with the files in our system (our computer). and this is how to import it into our script.js file: 
+
+   const fs = require('fs');
+
+the 'fs' stands for file system. 
+now we can read, write, delete files and create/delete folders.
+
+* To read a file we need after importing the 'fs' module into our project, to use the meathod of the 'fs' module. in our case we are going to use the 'readFile' method like so:
+
+   fs.readFile((./currentDirectoryOfFolder/theFileInsideTheFolder), (err, data) => {
+      if(err) {
+         console.log(err);
+      }
+      console.log(data.toString);
+   })
+
+The 'readFile' method has 2 arguments in it's paremeters:
+
+1- the relative rout in which the file that we want to grabe is placed.
+
+2- a callback function that also has 2 arguments in it's paremeters:
+
+1- 'err' (stands for "error"), which means if there is an error, we can - in the function - deside what to do with it.
+
+2- 'data', which we can deside what to do with it in the function. in case that there is no err.
+
+then we go and make our arrow function and in it we made an 'if' statment, that just in case that there will be an error we should console.log the error to the console.and if there is no error NODE will go the next line of code and will console.log the data that is in the file that we want.
+
+* All though, if we exacute this code to our console, the result will be: a 'buffer'. a buffer is a package of data that is being sent to the NODE console, this is the context that is in the file allthough in order for us to be able to read this file normaly, we must add a method called 'toString' which translates the buffer file to "English".
+
+* It is also very important to know that these type of code is 'Asycranus code", which means that it takes a little longer to get exacuted to the console. since these type of code have an argument that tells NODE (and in the browser, it tells the V8 engine there) that it needs to find the diractory that we want to read/delete ect. so while it does that there is a callback function that is ready to exacute the code the moment that NODE found the correct folder/file. 
+which means that by the litte time that NODE searches for the folder/file, NODE continues to the next line of code in the page and exacutes it. and only when it finds the asked folder/file does NODE activates the function which is known as the callback function.
+
+* To write a file or to replace an existing file we use this method:
+
+   fs.writeFile('./currentDirectoryFolder/theFileInsideTheFolder), 'This is what i want to write', () => {
+      console.log('The file that you wrote has bean exacuted');
+   }
+
+this method has 3 arguments as well:
+
+1- the place where the file is located.
+
+2- what we want to write in the file. in our case :'This is what i want to write'
+
+3- a callback function, in oour case it will write in the console: 'The file that you wrote has bean exacuted'.
+
+* Then we have the creating of a new directory (folder), this is the synatx:
+
+   if (!fs.existsSync('./assets')) {
+      fs.mkdir('./assets', (err) => {
+         if (err) {
+            console.log(err);
+         }
+         console.log('Folder was created');
+      })
+   } else {
+      //remove the files
+      fs.rmdir('./assets', (err) => {
+         if (err) {
+            console.log(err);
+         }
+         console.log('folder deleted!');
+      })
+   }
+
+We made an 'if' statement, and in the conditional we placed an 'fs' method that will check if the folder that we place in it's argument is existing. 
+in case that the file does exist then we place the actual 'fs' creating a new file method, which eccepts 2 arguments:
+
+1- where and what we name the file.
+
+2- a callback function that has 'err' as an argument (which stands for error).
+
+then we placed an 'if' statement for the err in case there is an error we should be able to see it (in the console), and if there is no error console.log('folder was created').
+
+after that we did the exact same thing just to delete a folder.
+
+* We placed the 'if' statement so that we will only create the new folder if it does not exist, if we dont then if the folder does exist then the NODE console will return an error. (just like an error on windoes/mac when there is allready existing folder with the same name).
+
+
+
+==== STREAMS AND BUFFERS ====
+
+* Streams and buffers are a way for us to trensfer large amount of data in smaller "packages" so that the user can interact with them early on, while he interacts with them the next buffer (data package) will arive, this is so that the user wont have to wait so long for all the data to come in one time.
+
+* The name for transfering large amount of data is called 'read stream' and 'write stream', the 'read stream' is where we want to transefer from, and the 'write stream' is where we want to trensfer it to. and this is the syntax:
+
+   const fs = require('fs');
+
+   const readStream = fs.createReadStream('./fileLocation', { encoding: utf-8});
+
+   const writeStream = fs.createWriteStream('./fileLocation');
+
+* So we cached the file that we wanted to trensfer into the 'readStream' var. by using the 'createReadStream' method which takes 2 arguments:
+
+1- the files location, so that the method could know which file we want to grab for trensfer.
+
+2- is an object that is basicly more of a syntax, that makes the buffers that come in to be translated to actual "English" (as we explained in the beggining of this section). and that is the UTF-8.
+
+Then we did the same with the 'createWriteStream' which we told NODE where to take the "grabed" data to. 
+
+* There is the method of 'pipe'. that takes the readble (the file which we are grabing) and passes it into a writeble stream (which will display the grabed file and will place it in another file like the "copy and paste" action). and this is the syntax: 
+
+   readStream.pipe(writeStream);
+
+This is the shorter version of writing this: 
+
+   readStream.on('data', (chunk) => {
+      console.log('---- NEW CHUNK ----')
+      console.log(chunk);
+      writeStream.write('\nNEW CHUNK\n');
+      writeStream.write(chunk)
+   })
+
+Here we took the 'readStream', ,which in it we placed 'fs' whith a method called createReadStream like we discussed last part, and there we already addressed where is the file. and then now we placed an event listener on that file destination. which takes 2 arguments:
+
+1- is the type of event, in our case it is a special event listener that takes the buffer "data", and evey buffer of data that is going to be transfering the next argument will be applied to it:
+
+2- this argument has the function that we can place any functionality that we want to apply on the buffers of data that are being transeferd, in our case it is the 2 console.log's, (that are here just to show us what is working and are basicly the wxact same thing as the next 2 lines of code). and we take the 'writeStream' and give it the 'write' method, which is to write on the selected file what is placed in the '()'. in our case in the first one is just plain syntax, and in the second one is the argument 'chunk' which is placed in the second argument as an argument (XD), and the 'chunk' argument basicly refers to the buffers of data.
+
+
+
+==== CLIENTS AND SERVERS ====
+
+* So untill now we have seen how NODE works on our computer. but what alse can we do with it? 
+aultemitly we want to create a website that the 'server-side' code (the code of the server), will run on NODE, and aswe learnt that the server is going to be listening to the calling of a client through the browser.
+
+* But how does that comunication between the browser and the server work? 
+So in the short version we type the address of a website in the browser and then when we press search the browser sends a request to the server, and then the server will look at the request and will return what we programed it to return. 
+in most cases it will be an HTML file and will be displayed in the browser. but it can be anything.
+But then there is another question: 
+
+* When we press enter after we chose the site we want to see, how does the browser know which server to look for? there are millions of servers out there! 
+So that is why we are going to get into the topic of IP addresses and domains.
+
+
+
+==== IP ADDRESSES & DOMAINS ====
+
+* IP addresses are like the address of a house but when we talk of servers it is the exact address of a server which is a computer that sits somewhere in the world and are connected to the internet.
+
+* now if we want our website to be availble on the internet, we place them into a computers called 'hosts' that host websites when we finnished. and this computer has a unik address (which are random numbers). and that is how we can access our website.
+
+* So if we want to connect to the server of our website on the 'host' computer we need the exact IP address. and so when we want to search on the browser a website, we do so on the search bar. 
+
+* But how are we going to remember so many numbers of the IP address?
+
+* That is where 'domains' come in, domain basicly means the name of the website, they are associated, so the name is basicly the IP address. 
+
+* This type of request, when we place a domain that is associated with an IP address, to the server is called a 'GET' request. because we want to get some resource from the server. there are other types of requests but we willl tackle them later.
+
+* All of what we learnt about the client connecting with the server is done with the 'HTTP' which stands for 'Hyper-Text Transfer Protocol' which is a set of instructions that command how the comunication acures. 
+This is like a human language. people use languages to comunicate between one another. so the same applies between computers.
+
+
+
+==== CREATING A SERVER ====
+
+* With NODE we create our own server which lives in the backend of our website. and this is the server that listens to requests that come from the broweser.
+
+* I will note here that there are 2 ways that we can create a server with NODE: 
+
+1- using one of the packages that NODE can give us if we ask which is the 'http' package.
+
+2- is using the 'express' package (the one that is used muc hmore now, and the one that we will use).
+
+But first we will show the 'http' package first, so that when we use the 'express' you will see how much shorter and faster you can create a server.
+
+* This is the basic syntax for creating a server with 'http':
+
+   const http = require("http");
+
+   const server = http.createServer((req, res) => {
+   console.log("request made");
+   });
+
+   server.listen(3000, "localhost", () => {
+   console.log("listening for requsts on port 3000");
+   });
+
+So in order for us to use the 'http' package from NODE, we use the 'require' method. and cach it in an 'http' var.
+
+Then to create a server we use the 'createServer' method. which takes 2 arguments which are objects that have many methods:
+
+1- 'req' which stands for : request. which is an object that has methods to see all the information about the request that is being made from the client.
+
+2- 'res' which stands for: response. which has methods that will help us with information about our response to the client.
+
+Then in order for our server to actualy start working that is where 'server.listen' comes. which comes with 3 arguments:
+
+1- is the port number (we will get into that later).
+
+2- is the name we want to call our server.
+
+3- is a callback function that will apply while our server is "listening" and it detects a request from the client. in our case we just console.loged.
+
+
+
+==== LOCALHOST & PORT NUMBERS ====
+
+* Localhost is a 'domain' name that we use to name this special IP address. the actual address/name of this IP is: 127.0.0.1, this is a special IP address since it conects to our computer and uses our computer to host our webpage, that is how we can host and interact with it whithout an actual server.
+
+* 'Port numbers' are used like doors, we have diff software on our computer that needs to connect to the internet, and acces data from its server, now in order for these diff softwares to keep each others data separated and not get mixed up, it uses these port numbers like gateways/doors to acces the data from the internet from our computer.
+And that is where our server touches this subject. our server also need to be connected to the internet through a port number (IP address), in order for it to comunicate. and a common one is port 3000 for local web developmant. 
+This is good since we know that this port number is used for web dev and there for it wont clash with other software ports.
+
+And this is what we write to connect to that IP address : 
+
+   localhost:3000
+
+* Now that the port 300 is listening for our requsets ect. it will stay listening (but will only apply the new code after we call it with node). if we want to exit the "listening" of the port 3000 then we press: control c (in mac).
+
+* It is impoirtant to remember that when we console.log somethig in the project while using NODE it will not console it to the browser, it will only console it to the node console. since it is runing in the backend not in the front end section. this is one of the reasons that they are not the same thing even though they both run under the V8 engine. as we wxplained in the beggining of this course. 
+
+* So to have a little sumery of the request and response small part that we learnt just to jug up the memorey: the request and the response which are objects that are placed as thr arguments of the createServer function. they have methods of their own. 
+
+request: has methods mainly to give information about the clients request.
+
+response: has methods that we as the server creaters use to tell the server what to do with which of the clients request. and we send it to the user/broweser.
+
+
+
+==== REQUEST OBJECT ====
+
+* When a user sends a req from the browser, we, as the devs can tell the server to let us know information about that req, for instance if we wanted to know where from isthe user sending the req, or what type of method is he using (whether it is a GET, POST, DELETE or PUT. which we will explain later). this is how we can see it (in our console using NODE): 
+
+   const http = require('http');
+
+   const server = http.createServer((req, res) => {
+   console.log(req.url, req.method);
+   });
+
+   server.listen(3000, 'localhost', () => {
+   console.log('listening for requsts on port 3000');
+   });
+
+If we run NODE on the console like so:
+
+   node server.js 
+
+(you can just write the name of the file you dont need to write what type like: '.js'). 
+So only when we refresh the page of 'localhost:3000' will we receive in the NODE console this :
+
+   / GET
+
+We only got the '/' since we dont receive only what is after Localhost:3000. and since - if we look in the browser where the url is placed (which is where we write 'localhost:3000' to access that IP address) - there is nothing after 'localhost:3000'. so that is why we didnt receive any 'url'. allthough if we place in the url after the localhost:3000 a '/' and then lets say 'about' (like most websites have an 'about' page), we will receive in the console this :
+
+   /about GET
+
+Knowing about the url is very important, since we later on will want to know what 'response' to send the user. like in our case the user wanted to see the 'about' page, now we know to send the about page, which will be a whole web page on its own with HTML CSS and JS :) .
+And then we have the method which is a 'GET' method. we will get in depth later.
+
+
+
+==== RESPONSE OBJECT ====
+
+* The response object (in the code we use it in short 'res'), is the response that we (the creaters of the servers) made the server send back if the spasipic request was made. the server sends this response to the user/client on the browser.
+
+* If we - lets say - just created the server via the 'http' module, and didnt use the response object in the function, then once we made a request from the browser then the browser will just be hanging there, and wont do anything. and this is because since we didnt tell the server to respond to a request, it will not do so. 
+
+So the first step to form a response is to formulate the response headres.
+
+* Response headers give the browser a little bit more information about about what type of respose is coming back to it from the server. whether it is HTML we are sending back or JSON.
+
+* We can also use the response headers to set what is called cookies(cookies help web developers give you more personal, convenient website visits, they sort of colect your private info. they are good to in one hand but dangeures if there are "pirates" that can get it. search online for a deeper understanding :p).
+
+* The way we use the response headers is like this:
+
+   const http = require('http');
+
+   http.createServer((req, res) => {
+      res.setHeader('Content-Type', 'text/plain');
+
+      res.write('this is a text');
+
+      res.end();
+   })
+
+so the first thing in the 'createServer' (in the server's function), is we set what type of a header we are using so we use the 'res' object and the method of 'writeHeader' which takes 2 arguments :
+
+1- is the common-practice syntax(cuz we can actualy write anything we want there) which is 'Content-Type'. which tells the brwoser that the content's type will be in the second argument.
+
+2- The type of the content that is being sent - in our case - is plain text and the syntax is :
+
+   'text/plain'
+
+Then we use the 'res''s method called 'write' which means what it means it will write what ever is in the '()'. 
+
+And then we tell the server (whith the 'end' method) to 'end' the response and send it all to the browser.
+ 
+* to send an HTML string we do this : 
+
+   'text/html'
+
+in the content-type. and then in the res.write this :
+
+   '<h1>Hello world</h1>'
+
+* If we make a response that will send HTML, that HTML which we are sending will change the default that is in the browser. which is good in case we want to change things.
+
+
+
+==== RETURNING HTML PAGES ====
+
+* We can also send intire HTML pages which is a much more clean way of doing things then packing all the data in the server.js file. and the way to do that is also by using the file managing with node like so : 
+
+   const http = require('http');
+   const fs = require('fs');
+
+   http.createServer((req, res) => {
+      res.setHeader('Content-Type', 'text/html');
+
+      fs.readFile('./whereTheFileIsLOcated', (err, data) => {
+         if (err) {
+            console.log(err);
+            res.end();
+         } else {
+            res.write(data);
+            res.end();
+         }
+      })
+   })
+
+* So here we told the server what type we are dealing with and after that we want the server to know where the content even is. so that is why we needed the 'fs' module, to locate the - in our case - HTML file in our desktop. so for that we used the 'fs' method called 'readFile', which takes 2 arguments :
+
+1- is the location in which the file is located in.
+
+2- is the callback function that will be exacted when the file has been located. which also has 2 argument : 
+
+1- is the err object. which contains the err, and incase there is an error what we want to do with it.
+
+2- is the data object which contains the datd that has been collected by the previus argument. and what we want to do with it.
+
+We then placed an 'if' staement if there is an error we should 'console.log(err)' - the err to the console. so that we can see it in the console if there is one.
+and then in the 'else' there iswhere our code is placed. there goes the response's methods of 'write' and 'end', and used the 'write' method to display the HTML file which was stored in the 'data' argument.
+
+* If we are sending only one 'res.write' then we can just place it in the 'res.end''s '()' like so :
+
+   res.end(data);
+
+
+
+==== BASIC ROUTING ====
+
+* Basic routing means : that when we want to reach spasific routs in our webpage (us devs or a client) through the url by placing '/' and then entering the files name (the name of the HTML file that we want). so we have to place in our server this functionality that the client will recieve what they request for. so this is the syntax for a simple basic routing : 
+
+   const http = require('http');
+   const fs = require('fs');
+
+   const server = http.createServer((req, res) => {
+      console.log(req.url, req.method);
+
+      // set header content type
+      res.setHeader('content-type', 'text/html');
+
+      let path = './views/';
+      switch (req.url) {
+         case '/':
+            path += 'index.html';
+            break;
+         case '/about':
+            path += 'about.html';
+            break;
+         default:
+            path += '404.html';
+            break;
+         }
+
+      // send back to the browser an HTML file
+      fs.readFile(path, (err, data) => {
+         if (err) {
+            console.log(err);
+            res.end();
+         } else {
+            res.write(data);
+            res.end();
+         }
+      });
+   });
+
+   server.listen(3000, 'localhost', () => {
+      console.log('listening for requsts on port 3000');
+   });
+
+* Here we used the 'switch' statement (simiular ti the 'if' statement), we used it to see if the req from the user is a string that matches our HTML files. if they are then we will use the 'fs' module's methods to respond to the client's req.
+
+We set a var with the name of the main folder that inside it are all the HTML files, and named it 'path', then we placed in the switch's '()' the expression in which we want to check. which is the 'req.url' whih is a method of the 'http' module, that give us info about which page the client is requesting. so we say : if the "case" is that 'req.url' was '/' (which means the main pageof the website) then ':' (here is where we place the code) "add" to var 'path' 'index.html' . and if that is the req made then 'break' out of the switch statement. if it isnt the 'case' then go to the next 'case'. and it does the same proccess untill it finds the right req and if non of them where met, then that is where the 'default' takes place. it is like the 'else' in the 'if' staement.
+
+* Then the JS engine procceeds to the next code in the file, and it comes to the 'fs' method of readFile and in the first argument where the rout of the file that we want to read. and we placed the var 'path' that contains the value of the path that the user has chosen, and then we 'writeFile' the data in the file that was selected.
+
+
+
+==== STATUS CODES ====
+
+* Status codes, discribe to us what status of the response that was sent to the browser. these are the common ones :
+
+200 - means that the responsse to the browser from the server was succesful.
+
+301 - means that the resource was moved perminantly somewhere else.
+
+404 - means that the resource that we want to send to the browser is not found.
+
+500 - means internal server error.
+
+There are many more status codes out there, but these are the more common ones as we said.
+
+* all status codes are all in ranges from 100 to 200 to 300 to 400 to 500'ds, the :
+
+100's - (meaning the status codes with numbers from 100 to 200) are informational responses.
+
+200's - (200 to 300) are success codes.
+
+300's - (300 to 400) are codes for redirects.
+
+400's - (400 to 500) are user/client error codes.
+
+500's - (500 to 600) are server error codes.
+
+* So to place these statuse codes in our code/ in our server response, so that it will be known for those who want to know what status was the response. this is the syntax :
+
+   res.statuscode = 200;
+
+and we can place any status code that we wantfrom 100 to 600. we can place this 'statusCode' method in the switch staement or place it in an if statement, the choice is yours.     
+
+
+
+==== REDIRECTS ====
+
+* Redirects is in case that the resource was moved from it's previus rout, - for exaple - if we had once a HTML file named 'about-me' and that held the about page, and after a year or two he desided to switch the name to just 'about'. so we need to redirect the users that might still be logging to the wrong page since they are allready used to it, and send them to correct-named page. and this is how :
+
+   let path = './views/';
+   switch (req.url) {
+      case '/':
+         res.statusCode = 200;
+         path += 'index.html';
+         break;
+      case '/about':
+         res.statusCode = 200;
+         path += 'about.html';
+         break;
+      case '/about-me':
+         res.statusCode = 301;
+         res.setHeader('location', 'about');
+         res.end();
+      default:
+         res.statusCode = 400;
+         path += '404.html';
+         break;
+   }
+
+* So we added a 'case' that if 'req.url' is a request to a file/webpage called 'about-me' it will return a code status of '301' which as we said previusly means that the resource has been perminently moved from the requested rout. and then we set a header that spesifies what type of response is being sent back to the browser, in our case is the redirect response which will take the cleint to the second argument, which is the 'about' page. and then we end the proccess with the syntax of 'res.end'.
+
+
+
+==== 3RD PARTY PACKAGES(MODULES) ====
+
+* So we learned untill now how to use the 'CORE packages' like the 'fs' and 'http' modules, that are on the node JS 'core', but we also can use 3rd party modules, which are pre made packages of code that other programers have made to make the code easier, like framworks etc.
+
+* To install these packages, we need to go to the 'NPM' library, which stands for 'Node Package Mananger'. 
+
+* The NPM library is installed onto our computer the moment we installed NODE on our computer, and this is why we can access the NPM libraby through the terminal. 
+
+* If we want to search packages we can go on the NPM website and search for the packages there. and on the website once youve found the package enter it to see how to install it via the terminal.
+
+
+
+==== INSTALLING PACKAGES GLOBALLY ====
+
+* The first thing to download and install from the NPM library is a package called 'NODEMON' it is a very very popular package that creates for us a 'live-reload server' which means that instead of stopping the running server after we saved our code, and re-running it so we can see the changes, now with nodemon everytime we save the code the changes apply while the server is still running, and that helps us with time.
+
+* Now after we searched 'nodemon' in NPM website, in order for us to install it so we can have it in our project, we can see on the website that there are 2 ways of doing so. 
+
+1- is to install the package globally.
+
+2- and the other is locally.
+
+* To install globally which means that it will install the selected package on our whole pc, so that every project that we make wil have this package. we go to the terminal (can be also in VS code) and the syntax is : 
+
+   npm install -g nodemon
+
+then press enter, it will install, and then all we need to do once the instalation is done is to write this :
+
+   nodemon server
+
+so that the nodemon will activate on the js file. and everytime we save our file code the server will reload itself.
+
+
+
+==== INSTALLING PACKAGES LOCALLY ====

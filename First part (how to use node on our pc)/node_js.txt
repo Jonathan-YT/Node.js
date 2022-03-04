@@ -1,0 +1,227 @@
+* node js runs on the V8 engine.
+
+* node js is writen in the js language.
+
+* node js is can run on our computer and does not need the browser.
+
+*the reason that node js can run on our computer with out the need to have a browser, is of the same reason that the broweser can read the js language at all and undestand it: beacuse of the V8 engine. Chrome is run through the V8 engine which is created with the C++ language, and the C++ language is an abstract language, which makes it easier for devs to code so that the computer will understad their commands. and the chain of languges from machine up is like this :
+1- is the base language whhich is the mechine language.
+2- assambly code.
+3- C++.
+4- is our language: JS.
+
+* so therefore the reason that node js can run on our computwe is because it - like the chrome browser- runs on the V8 engine which runs on C++, which then interpurtes our code all the way down to mechine code.
+
+* Node js is not only for running code instead of using the browser, it is also used for making files naming files connecting detabases and also act as a server for data.
+
+* A small down side to running js through node js is that we loose some of the abilties that the browser gave us such as DOM manipulation. or using the 'Window' object and hansforth the 'document' object(node uses a diffrent word called 'global').
+
+* An amazing benifit that node js has over other languages that handle servers: 
+1- is that we dont need to learn a new language it uses the JS language and compiles it down untill it is machine code.
+2- we can share code between the front and back-end.
+3- there is a huge comunity behind it.
+4- there are a lot of third-party packages and tools that we can use to help our code.
+
+
+
+---- NODE JS BASICS ----
+
+* In node we write normal JS code. and use the same syntax. allthough there is a diff between the Js that is used in the browser then in using the node js. in the browser there is the window object (also known as the globale object) that has all it's methods and all its propertis that we can use in the browser. in node we dont have the window object we have the 'globle' object. which has its own properties and methods.
+(remember that the reason why we dont need the window or the document object, is beacuse we are not interacting with the webpage, we are interacting with the back end side or with the servers.)
+
+* Just like in  the window object on the browser there is no need to write the window.method/property. the same goes for the 'global' object we can just write the property/method without writing global.
+
+* '__dirname' - is a way for us to find our current director in nodewe will need this late.
+there is also '__filename', which will give us the files name.
+
+
+
+---- MODULES AND REQUIRE ----
+
+* Modules are other separated script.js files that we have in our project that we can connect together to be one. and are good for reusability and making things more clear and clean. also known as : "packages".
+
+* So if we have an array in one script.js file and we want to use it in our main script.js file. all we have to do is this: 
+
+const mainFile = require('./arrayFile');
+
+this we do in the mainFile. but we only make changes from the arrayFiles. meaning that we cant make changes to the arrayFile from the mainFile. for this we need to manuely export the file that we want.
+
+* So to give compleate access to the mainFile to make changes from itself to the arrayFile. we need to do this in the file we want to export:
+
+module.exports = {
+   array: array,
+   secondArray: secondArray,
+}
+
+this is how we export a method or a property. we can export a single method/property or multipul ones. they get all stored in the object (when you export only one method/property you dont have to add the {}). 
+By the way there is even a shorter way of writing the exporting code:
+
+module.exports = {
+   array,
+   secondArray,
+}
+
+this you can do - even though we are writing data in an object, and objects are key-value pairs - still we can write only 
+"array" once beacuse under the hood js makes array : array, so that we wont have to write it. since always the key will equel the property.
+
+* If we want to distructure, meaning getting only a spasific property from the imported file (the object that is in the modul.exports), we can, we just do this:
+
+const { secondArray } = require('./arrayFile');
+
+and this will get the second array in the array.js file and will not grant us access to "touch" the first array (that is in the same page).
+
+* All that we have said untill now about modules is costum made module (modules made by us).
+allthough NODE has a few modules that are built inside it, and we can 'require' them to use in our projects.
+
+
+
+---- NODE & THE FILE SYSTEM ----
+
+* This section is going to talk about how to interact with the files in our system (our computer). and this is how to import it into our script.js file: 
+
+const fs = require('fs');
+
+the 'fs' stands for file system. 
+now we can read, write, delete files and creat/ delete folders.
+
+* To read a file we need after importing the 'fs' module into our project, to use the meathod of the 'fs' module. in our case we are going to use the 'readFile' method like so:
+
+fs.readFile((./currentDirectoryFolder/theFileInsideTheFolder), (err, data) => {
+   if(err) {
+      console.log(err);
+   }
+   console.log(data.toString);
+})
+
+The 'readFile' method has 2 arguments in it's paremeters:
+1- the relative rout in which the file that we want to grabe is placed.
+2- a callback function that also has 2 arguments in it's paremeters:
+1- 'err' (stands for "error"), which means if there is an error, we can - in the function - deside what to do with it.
+2- 'data', which we can deside what to do with it in the function. in case that there is no err.
+then we go and make our aarrow function and in it we made an 'if' statment, that just in case that there will be an error we should console.log the error to the console.and if there is no error node will go the next line of code and will console.log the data that is in the file that we want.
+
+* All though, if we exacute this code to our console, the result will be: a 'buffer'. a buffer is a package of data that is being sent to the node console, this is the context that is in the file allthough in order for us to be able to read this file normaly, we must add a method called 'toString' which translates the buffer file to "English".
+
+* It is also very important to know that these type of code is 'Asycranus code", which means that it takes a little longer to get exacuted to the console. since these type of code have an argument that tells node (and in the browser, it tells the V8 engine there) that it needs to find the diractory that we want to read/delete ect. so while it does that there is a callback function that is ready to exacute the code the moment that node found the correct folder/file. 
+which means that by the litte time that node searches for the folder/file, node continues to the next line of code in the page and exacutes it. and only when it finds the asked folder/file does node activates the function which is known as the callback function.
+
+* To write a file or to replace an existing file we use this method:
+
+fs.writeFile('./currentDirectoryFolder/theFileInsideTheFolder), 'This is what i want to write', () => {
+   console.log('The file that you wrote has bean exacuted');
+}
+
+this method has 2 arguments as well,
+1- the place where the file is located.
+2- what we want to write in the file. in our case :'This is what i want to write'
+3- a callback function, in oour case it will write in the console: 'The file that you wrote has bean exacuted'.
+
+* Then we have the creating of a new directory (folder), this is the synatx:
+
+if (!fs.existsSync('./assets')) {
+   fs.mkdir('./assets', (err) => {
+      if (err) {
+         console.log(err);
+      }
+      console.log('Folder was created');
+   })
+} else {
+   //remove the files
+   fs.rmdir('./assets', (err) => {
+      if (err) {
+         console.log(err);
+      }
+      console.log('folder deleted!');
+   })
+}
+
+We made an 'if' statement, and in the conditional we placed an 'fs' method that will check if the folder that we place in it's argument is existing. 
+in case that the file does exist then we place the actual 'fs' creating a new file method, which eccepts 2 arguments:
+1- where and what we name the file.
+2- a callback function that has 'err' as an argument (which stands for error).
+then we placed an 'if' statement for the err in case there is an error we should be able to see it (in the console), and if there is no error console.log('folder was created').
+
+after that we did the exact same thing just to delete a folder.
+
+* We placed the 'if' statement so that we will only create the new folder if it does not exist, if we dont then if the folder does exist then the NODE console will return an error. (just like an error on windoes/mac when there is allready existing folder with the same name).
+
+
+
+---- STREAMS AND BUFFERS ----
+
+* Streams and buffers are a way for us to trensfer large amount of data in smaller "packages" so that the user can interact with them early on, while he interacts with them the next buffer (data package) will arive, this is so that the user wont have to wait so long for all the data to come in one time.
+
+* The name for transfering large amount of data is called 'read stream' and 'write stream', the 'read stream' is where we want to transefer from, and the 'write stream' is where we want to trensfer it to. and this is the syntax:
+
+const fs = require('fs');
+
+const readStream = fs.createReadStream('./fileLocation', { encoding: utf-8});
+
+const writeStream = fs.createWriteStream('./fileLocation');
+
+* So we cached the file that we wanted to trensfer into the 'readStream' var. by using the 'createReadStream' method which takes 2 arguments:
+1- the files location, so that the method could know which file we want to grab for trensfer.
+2- is an object that is basicly more of a syntax, that makes the buffers that come in to be translated to actual "English" (as we explained in the beggining of this section). and that is the UTF-8.
+
+Then we did the same with the 'createWriteStream' which we told NODE where to take the "grabed" data to. 
+
+* There is the method of 'pipe'. that takes the readble (the file which we are grabing) and passes it into a writeble stream (which will display the grabed file and will place it in another file like the "copy and paste" action). and this is the syntax: 
+
+readStream.pipe(writeStream);
+
+This is the shorter version of writing this: 
+
+readStream.on('data', (chunk) => {
+   console.log('---- NEW CHUNK ----')
+   console.log(chunk);
+   writeStream.write('\nNEW CHUNK\n');
+   writeStream.write(chunk)
+})
+
+Here we took the 'readStream', ,which in it we placed 'fs' whith a method called createReadStream like we discussed last part, and there we already addressed where is the file. and then now we placed an event listener on that file destination. which takes 2 arguments:
+1- is the type of event, in our case it is a special event listener that takes the buffer "data", and evey buffer of data that is going to be transfering the next argument will be applied to it:
+2- this argument has the function that we can place any functionality that we want to apply on the buffers of data that are being transeferd, in our case it is the 2 console.log's, (that are here just to show us what is working and are basicly the wxact same thing as the next 2 lines of code). and we take the 'writeStream' and give it the 'write' method, which is to write on the selected file what is placed in the '()'. in our case in the first one is just plain syntax, and in the second one is the argument 'chunk' which is placed in the second argument as an argument (XD), and the 'chunk' argument basicly refers to the buffers of data.
+
+
+
+---- CLIENTS AND SERVERS ----
+
+* So untill now we have seen how node works on our computer. but what alse can we do with it? 
+aultemitly we want to create a website that the 'server-side' code (the code of the server), will run on node, and aswe learnt that the server is going to be listening to the calling of a client through the browser.
+* But how does that comunication between the browser and the server work? 
+So in the short version we type the address of a website in the browser and then when we press search the browser sends a request to the server, and then the server will look at the request and will return what we programed it to return. 
+in most cases it will be an HTML file and will be displayed in the browser. but it can be anything.
+But then there is another question: 
+ * When we press enter after we chose the site we want to see, how does the browser know which server to look for? there are millions of servers out there! 
+So that is why we are going to get into the topic of IP addresses and domains.
+
+
+
+---- IP ADDRESSES & DOMAINS ----
+
+* IP addresses are like the address of a house but when we talk of servers it is the exact address of a server which is a computer that sits somewhere in the world and are connected to the internet.
+
+* now if we want our website to be availble on the internet, we place them into a computers called 'hosts' that host websites when we finnished. and this computer has a unik address (which are random numbers). and that is how we can access our website.
+
+* So if we want to connect to the server of our website on the 'host' computer we need the exact IP address. and so when we want to search on the browser a website, we do so on the search bar. 
+
+* But how are we going to remember so many numbers of the IP address?
+
+* That is where 'domains' come in, domain basicly means the name of the website, they are associated, so the name is basicly the IP address. 
+
+* This type of request, when we place a domain that is associated with an IP address, to the server is called a 'GET' request. because we want to get some resource from the server. there are other types of requests but we willl tackle them later.
+
+* All of what we learnt about the client connecting with the server is done with the 'HTTP' which stands for 'Hyper-Text Transfer Protocol' which is a set of instructions that command how the comunication acures. 
+This is like a human language. people use languages to comunicate between one another. so the same applies between computers.
+
+
+
+---- CREATING A SERVER ----
+
+* With NODE we create our own server which lives in the backend of our website. and this is the server that listens to requests that come from the broweser.
+
+
+ ==> (he continuation of these notes will be in the servers folder(unless i copy it after to here))
+
+
+
